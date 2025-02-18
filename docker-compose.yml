@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  manager:
+    build: ./manager
+    ports:
+      - "8080:8080"
+    networks:
+      - app-network
+    environment:
+      WORKERS: 4
+    pull_policy: build
+
+  worker:
+    build: ./worker
+    expose:
+      - "8080"
+    networks:
+      - app-network
+    depends_on:
+      - manager
+    deploy:
+      replicas: 4
+    pull_policy: build
+
+networks:
+  app-network:
+    driver: bridge

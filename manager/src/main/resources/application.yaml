@@ -1,0 +1,14 @@
+server:
+  port: 8080
+  address: 0.0.0.0
+workers:
+  urls:
+    - http://crackhash-worker-1:8080
+    - http://crackhash-worker-2:8080
+    - http://crackhash-worker-3:8080
+    - http://crackhash-worker-4:8080
+    - http://crackhash-worker-5:8080
+    - http://crackhash-worker-6:8080
+    - http://crackhash-worker-7:8080
+    - http://crackhash-worker-8:8080
+

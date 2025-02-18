@@ -1,0 +1,5 @@
+rootProject.name = 'CrackHash'
+
+include 'common'
+include 'manager'
+include 'worker'
