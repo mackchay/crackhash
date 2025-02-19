@@ -12,6 +12,7 @@ import ru.haskov.worker.model.BruteForce;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.List;
 
 
 @Service
@@ -29,7 +30,7 @@ public class WorkerService {
     private String port;
 
     public void task(WorkerTaskDTO workerTaskDTO) {
-        String password = bruteForce.hack(workerTaskDTO.getHashDTO().getHash(),
+        List<String> password = bruteForce.hack(workerTaskDTO.getHashDTO().getHash(),
                 workerTaskDTO.getHashDTO().getMaxLength(),
                 workerTaskDTO.getPartNumber(),
                 workerTaskDTO.getPartCount());

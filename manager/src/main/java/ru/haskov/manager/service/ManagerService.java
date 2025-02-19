@@ -48,7 +48,7 @@ public class ManagerService {
                     .post()
                     .uri(workerUrls.get(i) + taskRequestAPI)
                     .bodyValue(new WorkerTaskDTO(hashDTO, taskId, i, workerCount))
-                    .retrieve().toBodilessEntity().timeout(Duration.ofSeconds(60)).
+                    .retrieve().toBodilessEntity().timeout(Duration.ofSeconds(300)).
                     subscribe(
                         response -> System.out.println("Task send successfully"),
                         error -> {
