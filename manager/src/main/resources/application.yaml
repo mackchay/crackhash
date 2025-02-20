@@ -12,3 +12,8 @@ workers:
     - http://crackhash-worker-7:8080
     - http://crackhash-worker-8:8080
 
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost/27017/course
+

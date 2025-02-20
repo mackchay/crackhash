@@ -5,11 +5,12 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Setter
 @AllArgsConstructor
 public class WorkerResponseDTO {
-    private String taskId;
+    private UUID taskId;
     private List<String> data;
 }

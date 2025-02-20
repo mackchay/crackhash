@@ -1,4 +1,4 @@
-package model;
+package ru.haskov.manager.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

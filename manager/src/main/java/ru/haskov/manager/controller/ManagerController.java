@@ -6,9 +6,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import ru.haskov.common.dto.HashDTO;
-import model.PasswordData;
+import ru.haskov.manager.model.PasswordData;
 import ru.haskov.common.dto.WorkerResponseDTO;
 import ru.haskov.manager.service.ManagerService;
+
+import java.util.UUID;
 
 @RestController
 @AllArgsConstructor
@@ -17,18 +19,17 @@ public class ManagerController {
     private final ManagerService managerService;
 
     @PostMapping("/api/hash/crack")
-    public ResponseEntity<String> hackRequest(@RequestBody HashDTO hashDTO) {
-        return managerService.hackRequest(hashDTO);
+    public ResponseEntity<UUID> hackRequest(@RequestBody HashDTO hashDTO) {
+        return managerService.crackHashRequest(hashDTO);
     }
 
     @GetMapping("/api/hash/status")
-    public PasswordData hackResponse(@RequestParam String requestId) {
-        return managerService.hackResponse(requestId);
+    public ResponseEntity<PasswordData> hackResponse(@RequestParam UUID requestId) {
+        return managerService.crackHackResponse(requestId);
     }
 
     @PatchMapping("/internal/api/manager/hash/crack/request")
     public ResponseEntity<String> receiveWorkerResult(@RequestBody WorkerResponseDTO responseDTO) {
-        managerService.receiveWorkerResult(responseDTO);
-        return ResponseEntity.ok("Result received");
+        return managerService.receiveWorkerResult(responseDTO);
     }
 }
