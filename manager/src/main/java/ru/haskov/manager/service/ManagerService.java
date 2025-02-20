@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import ru.haskov.common.dto.HashDTO;
-import ru.haskov.common.dto.ResponseDTO;
+import model.PasswordData;
 import ru.haskov.common.dto.WorkerResponseDTO;
 import ru.haskov.common.dto.WorkerTaskDTO;
 import ru.haskov.manager.properties.WorkerProperties;
@@ -14,7 +14,6 @@ import ru.haskov.manager.properties.WorkerProperties;
 import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 @RequiredArgsConstructor
@@ -29,7 +28,7 @@ public class ManagerService {
     @NonNull
     private final WebClient.Builder webClientBuilder;
 
-    private final Map<String, ResponseDTO> taskStatusMap = new ConcurrentHashMap<>();
+    private final Map<String, PasswordData> taskStatusMap = new ConcurrentHashMap<>();
     private final Map<String, Integer> workerSuccessMap = new ConcurrentHashMap<>();
 
     @NonNull
@@ -39,7 +38,7 @@ public class ManagerService {
         String taskId = UUID.randomUUID().toString();
         List<String> workerUrls = properties.getUrls();
 
-        taskStatusMap.put(taskId, new ResponseDTO("IN PROGRESS", new ArrayList<>()));
+        taskStatusMap.put(taskId, new PasswordData("IN PROGRESS", new ArrayList<>()));
         workerSuccessMap.put(taskId, 0);
 
         for (int i = 0; i < workerCount; i++) {
@@ -54,7 +53,7 @@ public class ManagerService {
                         },
                         error -> {
                             if (taskStatusMap.get(taskId).getStatus().equals("IN PROGRESS")) {
-                                taskStatusMap.put(taskId, new ResponseDTO("ERROR",
+                                taskStatusMap.put(taskId, new PasswordData("ERROR",
                                         taskStatusMap.get(taskId).getData())
                                 );
                             }
@@ -65,7 +64,7 @@ public class ManagerService {
         return ResponseEntity.ok(taskId);
     }
 
-    public ResponseDTO hackResponse(String requestId) {
+    public PasswordData hackResponse(String requestId) {
         return taskStatusMap.get(requestId);
     }
 
@@ -82,7 +81,7 @@ public class ManagerService {
             }
             taskStatusMap.put(
                     responseDTO.getTaskId(),
-                    new ResponseDTO(status, newData)
+                    new PasswordData(status, newData)
             );
             workerSuccessMap.put(
                     responseDTO.getTaskId(),

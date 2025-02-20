@@ -1,4 +1,4 @@
-package ru.haskov.common.dto;
+package model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
-public class ResponseDTO {
+public class PasswordData {
     private String status;
     private List<String> data;
 }

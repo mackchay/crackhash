@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import ru.haskov.common.dto.HashDTO;
-import ru.haskov.common.dto.ResponseDTO;
+import model.PasswordData;
 import ru.haskov.common.dto.WorkerResponseDTO;
 import ru.haskov.manager.service.ManagerService;
 
@@ -22,7 +22,7 @@ public class ManagerController {
     }
 
     @GetMapping("/api/hash/status")
-    public ResponseDTO hackResponse(@RequestParam String requestId) {
+    public PasswordData hackResponse(@RequestParam String requestId) {
         return managerService.hackResponse(requestId);
     }
 
