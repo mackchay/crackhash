@@ -19,7 +19,7 @@ spring:
         all: true
   data:
     mongodb:
-      uri: mongodb://${MONGO_DEFAULT_HOST1:localhost},${MONGO_DEFAULT_HOST2:localhost}:${MONGO_DEFAULT_PORT:27017}/crackhash
+      uri: mongodb://${MONGO_DEFAULT_HOST1:localhost}:${MONGO_DEFAULT_PORT},${MONGO_DEFAULT_HOST2:localhost}:${MONGO_DEFAULT_PORT:27017}/crackhash
 
   rabbitmq:
     host: ${RABBITMQ_DEFAULT_HOST:localhost}

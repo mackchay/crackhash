@@ -1,5 +1,6 @@
 package ru.haskov.worker.service.impl;
 
+import com.rabbitmq.client.Channel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,7 +28,8 @@ public class SimpleWorkerServiceImpl implements WorkerService {
     @Value("${server.port}")
     private String port;
 
-    public void task(WorkerTaskDTO workerTaskDTO) {
+    @Override
+    public void task(WorkerTaskDTO workerTaskDTO, Channel channel, long deliveryTag) {
         List<String> password = bruteForce.hack(workerTaskDTO.getHashDTO().getHash(),
                 workerTaskDTO.getHashDTO().getMaxLength(),
                 workerTaskDTO.getPartNumber(),
@@ -43,5 +45,4 @@ public class SimpleWorkerServiceImpl implements WorkerService {
                         error -> System.err.println("Failed sending data to manager: " + error.getMessage())
                 );
     }
-
 }

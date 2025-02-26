@@ -4,6 +4,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
+import org.springframework.amqp.core.MessageDeliveryMode;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,10 @@ public class Producer {
     private RabbitTemplate amqpTemplate;
 
     public void sendTaskResponse(WorkerResponseDTO workerResponseDTO) {
-        amqpTemplate.convertAndSend(taskQueueName, workerResponseDTO);
+        amqpTemplate.convertAndSend(taskQueueName, workerResponseDTO, message -> {
+            message.getMessageProperties().setDeliveryMode(MessageDeliveryMode.PERSISTENT);
+            return message;
+        });
     }
 
 }

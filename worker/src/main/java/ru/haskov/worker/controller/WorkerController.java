@@ -14,13 +14,8 @@ public class WorkerController {
 
     @PostMapping("/internal/api/manager/hash/crack/task")
     public ResponseEntity<String> task(@RequestBody WorkerTaskDTO workerTaskDTO) {
-        simpleWorkerServiceImpl.task(workerTaskDTO);
+        simpleWorkerServiceImpl.task(workerTaskDTO, null, 0);
         return ResponseEntity.ok().build();
-    }
-
-    @GetMapping("/health")
-    public ResponseEntity<String> healthCheck() {
-        return ResponseEntity.ok("OK");
     }
 
 }

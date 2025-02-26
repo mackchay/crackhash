@@ -68,17 +68,11 @@ public class MongoManagerService implements ManagerService {
     @Override
     @RabbitListener(queues = ("${queue.task_response}"))
     public void receiveWorkerResult(@Payload @NonNull WorkerResponseDTO responseDTO) {
+        System.out.println("Received message: " + responseDTO.getData());
         CrackHashData data = managerRepository.findById(responseDTO.getTaskId()).orElse(null);
         if (data == null) {
             System.out.println("No data found for task id " + responseDTO.getTaskId());
             return;
-        }
-
-        if (!responseDTO.getData().isEmpty()) {
-            if (data.getPasswords().contains(responseDTO.getData().get(0))) {
-                System.out.println("Duplicate deleted.");
-                return;
-            }
         }
 
         List<String> newPasswords = new ArrayList<>(data.getPasswords());

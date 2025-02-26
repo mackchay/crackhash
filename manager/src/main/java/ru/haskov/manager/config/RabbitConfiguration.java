@@ -132,7 +132,7 @@ public class RabbitConfiguration {
             CachingConnectionFactory connectionFactory) {
         SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
         factory.setConnectionFactory(connectionFactory);
-        factory.setConcurrentConsumers(4);  // Количество воркеров
+        factory.setConcurrentConsumers(1);  // Количество воркеров
         factory.setPrefetchCount(1);  // 1 задача на воркера
         factory.setMessageConverter(jsonMessageConverter());
         return factory;
