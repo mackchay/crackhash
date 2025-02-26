@@ -13,5 +13,5 @@ public interface ManagerService {
 
     ResponseEntity<PasswordData> crackHackResponse(UUID requestId);
 
-    ResponseEntity<String> receiveWorkerResult(WorkerResponseDTO responseDTO);
+    void receiveWorkerResult(WorkerResponseDTO responseDTO);
 }

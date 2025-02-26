@@ -17,7 +17,6 @@ import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-@Primary
 @Service
 @RequiredArgsConstructor
 public class InMemoryManagerService implements ManagerService {
@@ -71,7 +70,7 @@ public class InMemoryManagerService implements ManagerService {
         return ResponseEntity.ok(taskStatusMap.get(requestId));
     }
 
-    public ResponseEntity<String> receiveWorkerResult(WorkerResponseDTO responseDTO) {
+    public void receiveWorkerResult(WorkerResponseDTO responseDTO) {
         System.out.println("Received worker result: " + responseDTO.getTaskId()
                 + ":" + responseDTO.getData());
         if (taskStatusMap.get(responseDTO.getTaskId()).getStatus().equals("IN PROGRESS")) {
@@ -92,6 +91,5 @@ public class InMemoryManagerService implements ManagerService {
             );
 
         }
-        return ResponseEntity.ok("Result registered.");
     }
 }

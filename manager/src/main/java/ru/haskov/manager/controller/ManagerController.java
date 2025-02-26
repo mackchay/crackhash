@@ -15,7 +15,6 @@ import java.util.UUID;
 @RestController
 @AllArgsConstructor
 public class ManagerController {
-
     private final ManagerService managerService;
 
     @PostMapping("/api/hash/crack")
@@ -29,7 +28,7 @@ public class ManagerController {
     }
 
     @PatchMapping("/internal/api/manager/hash/crack/request")
-    public ResponseEntity<String> receiveWorkerResult(@RequestBody WorkerResponseDTO responseDTO) {
-        return managerService.receiveWorkerResult(responseDTO);
+    public void receiveWorkerResult(@RequestBody WorkerResponseDTO responseDTO) {
+        managerService.receiveWorkerResult(responseDTO);
     }
 }

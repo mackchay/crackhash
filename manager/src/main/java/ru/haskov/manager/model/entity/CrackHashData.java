@@ -14,14 +14,22 @@ import java.util.UUID;
 @Document
 @Getter
 @Setter
-@lombok.NonNull
 @AllArgsConstructor
 public class CrackHashData {
 
     @Id
     private UUID id;
+    @NonNull
+    private String hash;
+    @NonNull
+    private Integer maxLength;
 
     @NonNull
     private String status;
+
+    @NonNull
     private List<String> passwords;
+
+    @NonNull
+    private Integer partsCount;
 }

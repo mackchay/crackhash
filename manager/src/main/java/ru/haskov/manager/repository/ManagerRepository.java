@@ -1,5 +1,6 @@
 package ru.haskov.manager.repository;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 import ru.haskov.manager.model.entity.CrackHashData;

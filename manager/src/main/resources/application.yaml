@@ -13,7 +13,33 @@ workers:
     - http://crackhash-worker-8:8080
 
 spring:
+  amqp:
+    deserialization:
+      trust:
+        all: true
   data:
     mongodb:
-      uri: mongodb://localhost/27017/course
+      uri: mongodb://${MONGO_DEFAULT_HOST1:localhost},${MONGO_DEFAULT_HOST2:localhost}:${MONGO_DEFAULT_PORT:27017}/crackhash
+
+  rabbitmq:
+    host: ${RABBITMQ_DEFAULT_HOST:localhost}
+    port: ${RABBITMQ_DEFAULT_PORT:5672}
+    username: ${RABBITMQ_DEFAULT_USER:guest}
+    password: ${RABBITMQ_DEFAULT_PASSWORD:guest}
+
+queue:
+  task_request: task_request
+  task_response: task_response
+  dlq: dlq_queue
+
+exchange:
+  tasks: task_exchange
+  dlx: dlx_exchange
+
+routing:
+  task_request: task_request_key
+  task_response: task_response_key
+  dlq: dlq_routing_key
+
+workers_num: ${WORKERS:1}
 

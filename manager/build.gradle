@@ -32,10 +32,10 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
-	// https://mvnrepository.com/artifact/org.springframework.kafka/spring-kafka
-	implementation group: 'org.springframework.kafka', name: 'spring-kafka', version: '3.3.3'
-	// https://mvnrepository.com/artifact/org.springframework.data/spring-data-mongodb
-	implementation group: 'org.springframework.data', name: 'spring-data-mongodb', version: '4.4.3'
+	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+	// https://mvnrepository.com/artifact/org.springframework.amqp/spring-rabbit
+	implementation group: 'org.springframework.amqp', name: 'spring-rabbit', version: '3.2.0'
+
 
 
 }

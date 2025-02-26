@@ -31,6 +31,9 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     implementation 'com.googlecode.combinatoricslib:combinatoricslib:2.3'
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    // https://mvnrepository.com/artifact/org.springframework.amqp/spring-rabbit
+    implementation group: 'org.springframework.amqp', name: 'spring-rabbit', version: '3.2.0'
+
 }
 
 tasks.named('test') {

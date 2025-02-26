@@ -1,4 +1,30 @@
 server:
-  port: 8080
+  port: 0
 manager:
   url: http://manager:8080
+
+spring:
+  amqp:
+    deserialization:
+      trust:
+        all: true
+
+  rabbitmq:
+    host: ${RABBITMQ_DEFAULT_HOST:localhost}
+    port: ${RABBITMQ_DEFAULT_PORT:5672}
+    username: ${RABBITMQ_DEFAULT_USER:guest}
+    password: ${RABBITMQ_DEFAULT_PASSWORD:guest}
+
+queue:
+  task_request: task_request
+  task_response: task_response
+  dlq: dlq_queue
+
+exchange:
+  tasks: task_exchange
+  dlx: dlx_exchange
+
+routing:
+  task_request: task_request_routing
+  task_response: task_response_routing
+  dlq: dlq_routing_key

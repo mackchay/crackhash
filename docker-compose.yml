@@ -9,7 +9,19 @@ services:
       - app-network
     environment:
       WORKERS: 4
+      RABBITMQ_DEFAULT_HOST: rabbitmq
+      RABBITMQ_DEFAULT_PORT: 5672
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASSWORD: guest
+
+      MONGO_DEFAULT_HOST1: mongo1
+      MONGO_DEFAULT_HOST2: mongo2
+      MONGO_DEFAULT_PORT: 27017
+
     pull_policy: build
+    depends_on:
+      - rabbitmq
+      - mongo-init-replica
 
   worker:
     build: ./worker
@@ -17,24 +29,84 @@ services:
       - "8080"
     networks:
       - app-network
+    environment:
+      RABBITMQ_DEFAULT_HOST: rabbitmq
+      RABBITMQ_DEFAULT_PORT: 5672
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASSWORD: guest
     depends_on:
       - manager
+      - rabbitmq
     deploy:
       replicas: 4
     pull_policy: build
 
-  mongodb:
-    image: mongo
-    container_name: mongodb
+  # MongoDB (Replica Set)
+  mongo1:
+    image: mongo:6
+    container_name: mongo1
     restart: always
     ports:
-      - "27017:27017"
+      - "30001:27017"
+    depends_on:
+      - mongo2
+    command: mongod --replSet myReplicaSet --bind_ip_all;
+    networks:
+      - app-network
     volumes:
-       - mongo_data:/data/db
+      - mongo1_data:/data/db
+
+  mongo2:
+    image: mongo:6
+    container_name: mongo2
+    restart: always
+    ports:
+      - "30002:27017"
+    command: mongod --replSet myReplicaSet --bind_ip_all;
+    networks:
+      - app-network
+    volumes:
+      - mongo2_data:/data/db
+
+  mongo-init-replica:
+    image: mongo:latest
+    container_name: mongo-init-replica
+    restart: no
+    depends_on:
+      - mongo1
+      - mongo2
+    command: >
+      sh -c "
+        sleep 10; 
+        mongosh --host mongo1:27017 --eval '
+          rs.initiate({
+            _id: \"myReplicaSet\",
+            members: [
+              { _id: 0, host: \"mongo1:27017\" },
+              { _id: 1, host: \"mongo2:27017\" }
+            ]
+          });
+        '"
+    networks:
+      - app-network
+
+  rabbitmq:
+    image: rabbitmq:3.12-management
+    container_name: rabbitmq
+    restart: always
+    ports:
+      - "5672:5672"   # AMQP (для приложений)
+      - "15672:15672" # Web UI
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - app-network
 
 networks:
   app-network:
     driver: bridge
 
 volumes:
-  mongo_data:
+  mongo1_data:
+  mongo2_data:
+  rabbitmq_data:
