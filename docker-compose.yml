@@ -16,6 +16,7 @@ services:
 
       MONGO_DEFAULT_HOST1: mongo1
       MONGO_DEFAULT_HOST2: mongo2
+      MONGO_DEFAULT_HOST3: mongo3
       MONGO_DEFAULT_PORT: 27017
 
     pull_policy: build
@@ -68,6 +69,18 @@ services:
     volumes:
       - mongo2_data:/data/db
 
+  mongo3:
+    image: mongo:6
+    container_name: mongo3
+    restart: always
+    ports:
+      - "30003:27017"
+    command: mongod --replSet myReplicaSet --bind_ip_all;
+    networks:
+      - app-network
+    volumes:
+      - mongo3_data:/data/db
+
   mongo-init-replica:
     image: mongo:latest
     container_name: mongo-init-replica
@@ -75,6 +88,7 @@ services:
     depends_on:
       - mongo1
       - mongo2
+      - mongo3
     command: >
       sh -c "
         sleep 10; 
@@ -82,8 +96,9 @@ services:
           rs.initiate({
             _id: \"myReplicaSet\",
             members: [
-              { _id: 0, host: \"mongo1:27017\" },
-              { _id: 1, host: \"mongo2:27017\" }
+              { _id: 0, host: \"mongo1:27017\", priority: 3 },
+              { _id: 1, host: \"mongo2:27017\", priority: 2 },
+              { _id: 2, host: \"mongo3:27017\", priority: 1 }
             ]
           });
         '"
@@ -109,4 +124,5 @@ networks:
 volumes:
   mongo1_data:
   mongo2_data:
+  mongo3_data:
   rabbitmq_data:
